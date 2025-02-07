@@ -1,0 +1,194 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Corrected property */
+}
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+
+/* Style for Search Button */
+#searchBtn {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Icon styling */
+#searchBtn i {
+  margin-right: 8px;  /* Space between icon and text */
+  font-size: 18px;
+}
+/* Loading Spinner */
+#loadingSpinner {
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  z-index: 9999;
+  width: 5rem;  /* Increased size */
+  height: 5rem;  /* Increased size */
+  border-width: 0.5em;  /* Increased border width */
+  display: none;
+}
+
+/* Breaking News */
+.breaking-news {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  background-color: red;
+  padding: 10px;
+  border-radius: 5px;
+  display: block;
+  margin-top: 35px;
+  text-align: center;
+  overflow: hidden;  /* Hide the overflow */
+  white-space: nowrap;  /* Prevent wrapping of the text */
+}
+
+/* Marquee Effect Using CSS */
+.breaking-text {
+  display: inline-block;
+  animation: marquee 10s linear infinite;  /* Animation lasting 10 seconds */
+}
+
+@keyframes marquee {
+  0% {
+      transform: translateX(100%);  /* Start from the right */
+  }
+  100% {
+      transform: translateX(-100%);  /* End on the left */
+  }
+}
+
+.breaking-text a {
+  color: white;  /* White text color for the link */
+  text-decoration: none; 
+  font-size: 18px; /* Remove underline from the link */
+}
+
+.breaking-text a:hover {
+  text-decoration: underline;  /* Underline on hover */
+}
+
+/* News Cards */
+.card {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card-img-top {
+  border-radius: 10px 10px 0 0;
+}
+
+.card-body {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1rem;
+}
+
+/* News Card Button */
+.card .btn {
+  background-color: #f8a145;
+  border: none;
+}
+
+.card .btn:hover {
+  background-color: #e08029;
+}
+
+/* News Container */
+#newsContainer {
+  margin-top: 80px; /* Pushes news down to avoid navbar overlap */
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Ensure the navbar is fixed at the top */
+.navbar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Active Navbar Link */
+.navbar-nav .nav-link.active {
+  font-weight: bold;
+}
+
+/* Remove bold style from inactive links */
+.navbar-nav .nav-link {
+  font-weight: normal;
+}
+
+/* Ensure the footer is always at the bottom */
+html, body {
+  height: 100%;
+}
+
+.content-wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer {
+  margin-top: auto;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .card-title {
+      font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .card-body {
+      padding: 15px;
+  }
+
+  .navbar-brand {
+      font-size: 1.2rem;
+  }
+
+  .nav-link {
+      font-size: 0.9rem;
+  }
+
+  .breaking-news {
+      font-size: 16px;
+  }
+
+  .breaking-text a {
+      font-size: 14px;
+  }
+
+  .card-title {
+      font-size: 1rem;
+  }
+
+  .card-text {
+      font-size: 0.9rem;
+  }
+
+  .footer p {
+      font-size: 0.9rem;
+  }
+}
