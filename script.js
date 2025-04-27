@@ -1,17 +1,15 @@
-// API Key
+// API KEY
 const API_KEY = "970d29bf2d964043826f5dce03dde49f";
-
-// Base URL for News API
 const BASE_URL = "https://newsapi.org/v2";
 
 // Elements
 const newsContainer = document.getElementById("newsContainer");
-const breakingNews = document.getElementById("breakingNews");
 const breakingText = document.getElementById("breakingText");
 const loadingSpinner = document.getElementById("loadingSpinner");
+const noResultsMessage = document.getElementById("noResultsMessage");
 
-const searchQuery = document.getElementById("newsQuery");
 const searchBtn = document.getElementById("searchBtn");
+const searchQuery = document.getElementById("newsQuery");
 
 const latestBtn = document.getElementById("latest");
 const generalBtn = document.getElementById("general");
@@ -22,121 +20,110 @@ const technologyBtn = document.getElementById("technology");
 
 const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
 
-const languageSelector = document.getElementById("languageSelector");
-
-// Load Latest News on Page Load
-window.onload = function () {
-    fetchNews("top-headlines?country=us", "Latest News");
+// Load latest news
+window.onload = function() {
+  fetchNews("top-headlines?country=us", true);
 };
 
-// Fetch News by Category or Search Query
-function fetchNews(endpoint, category) {
-    newsContainer.innerHTML = "";
-    document.getElementById("noResultsMessage").style.display = "none"; // Hide no results message
-    loadingSpinner.style.display = "block"; // Show loading spinner
-    fetch(`${BASE_URL}/${endpoint}&apiKey=${API_KEY}`)
-        .then(response => response.json())
-        .then(data => {
-            loadingSpinner.style.display = "none"; // Hide loading spinner
-            if (data.articles.length > 0) {
-                displayNews(data.articles);
-                displayBreakingNews(data.articles[0]); // Display Breaking News
-            } else {
-                newsContainer.innerHTML = "";
-                document.getElementById("noResultsMessage").style.display = "block"; // Show no results message
-            }
-        })
-        .catch(error => {
-            loadingSpinner.style.display = "none"; // Hide loading spinner
-            console.log("Error fetching news:", error);
-        });
+// Fetch news function
+function fetchNews(endpoint, isBreaking = false) {
+  newsContainer.innerHTML = "";
+  noResultsMessage.style.display = "none";
+  loadingSpinner.style.display = "block";
+
+  fetch(`${BASE_URL}/${endpoint}&apiKey=${API_KEY}`)
+    .then(res => res.json())
+    .then(data => {
+      loadingSpinner.style.display = "none";
+      if (data.articles.length > 0) {
+        displayNews(data.articles);
+        if (isBreaking) {
+          displayBreakingNews(data.articles[0]);
+        }
+      } else {
+        noResultsMessage.style.display = "block";
+      }
+    })
+    .catch(err => {
+      console.error("Error fetching news:", err);
+      loadingSpinner.style.display = "none";
+    });
 }
 
-// Display News Cards
+// Display news articles
 function displayNews(articles) {
-    articles.forEach(article => {
-        const card = document.createElement("div");
-        card.className = "col-md-4 mb-4 d-flex";
+  articles.forEach(article => {
+    const card = document.createElement("div");
+    card.className = "col-md-4 mb-4 d-flex";
 
-        card.innerHTML = `
-            <div class="card">
-                <img src="${article.urlToImage || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="...">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">${article.title}</h5>
-                    <p class="card-text">${article.description || "No description available"}</p>
-                    <a href="${article.url}" class="btn btn-warning btn-display mt-auto" target="_blank">Read More</a>
-                </div>
-            </div>
-        `;
-
-        newsContainer.appendChild(card);
-    });
+    card.innerHTML = `
+      <div class="card">
+        <img src="${article.urlToImage || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="News image">
+        <div class="card-body">
+          <h5 class="card-title">${article.title}</h5>
+          <p class="card-text">${article.description || "No description available."}</p>
+          <a href="${article.url}" target="_blank" class="btn btn-warning mt-2">Read More</a>
+        </div>
+      </div>
+    `;
+    newsContainer.appendChild(card);
+  });
 }
 
-// Display Breaking News
-function displayBreakingNews(news) {
-    breakingNews.style.display = "block";
-    breakingText.innerHTML = `<a href="${news.url}" target="_blank">${news.title}</a>`;
+// Display breaking news
+function displayBreakingNews(article) {
+  breakingText.innerHTML = `<a href="${article.url}" target="_blank" class="text-white">${article.title}</a>`;
 }
 
-// Function to handle active state
-function setActiveLink(link) {
-    navLinks.forEach(navLink => {
-        navLink.classList.remove('active');
-    });
-    link.classList.add('active');
+// Handle active nav link
+function setActiveLink(clickedLink) {
+  navLinks.forEach(link => link.classList.remove("active"));
+  clickedLink.classList.add("active");
 }
 
-// Event Listeners for Category Buttons
+// Event listeners
 latestBtn.addEventListener("click", () => {
-    fetchNews("top-headlines?country=us", "Latest News");
-    setActiveLink(latestBtn);
+  fetchNews("top-headlines?country=us", true);
+  setActiveLink(latestBtn);
 });
+
 generalBtn.addEventListener("click", () => {
-    fetchNews("top-headlines?country=us&category=general", "General News");
-    setActiveLink(generalBtn);
+  fetchNews("top-headlines?country=us&category=general");
+  setActiveLink(generalBtn);
 });
+
 businessBtn.addEventListener("click", () => {
-    fetchNews("top-headlines?country=us&category=business", "Business News");
-    setActiveLink(businessBtn);
+  fetchNews("top-headlines?country=us&category=business");
+  setActiveLink(businessBtn);
 });
+
 sportsBtn.addEventListener("click", () => {
-    fetchNews("top-headlines?country=us&category=sports", "Sports News");
-    setActiveLink(sportsBtn);
+  fetchNews("top-headlines?country=us&category=sports");
+  setActiveLink(sportsBtn);
 });
+
 entertainmentBtn.addEventListener("click", () => {
-    fetchNews("top-headlines?country=us&category=entertainment", "Entertainment News");
-    setActiveLink(entertainmentBtn);
+  fetchNews("top-headlines?country=us&category=entertainment");
+  setActiveLink(entertainmentBtn);
 });
+
 technologyBtn.addEventListener("click", () => {
-    fetchNews("top-headlines?country=us&category=technology", "Technology News");
-    setActiveLink(technologyBtn);
+  fetchNews("top-headlines?country=us&category=technology");
+  setActiveLink(technologyBtn);
 });
 
-// Search News by Query
 searchBtn.addEventListener("click", () => {
-    const query = searchQuery.value;
-    if (query) {
-        fetchNews(`everything?q=${query}`, `Search Results for "${query}"`);
-    }
+  const query = searchQuery.value.trim();
+  if (query !== "") {
+    fetchNews(`everything?q=${encodeURIComponent(query)}`);
+    navLinks.forEach(link => link.classList.remove("active"));
+  }
 });
 
-// Function to change language
-languageSelector.addEventListener("change", function() {
-    const language = languageSelector.value;
-    const googleTranslateElement = document.querySelector('.goog-te-combo');
-    if (googleTranslateElement) {
-        googleTranslateElement.value = language;
-        googleTranslateElement.dispatchEvent(new Event('change'));
-    }
-});
-
-
-
+// Google Translate
 function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,hi,bn,te,mr,ta,gu,kn,ml,pa'
-    }, 'languageSelector');
-
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    includedLanguages: 'en,hi,bn,te,mr,ta,gu,kn,ml,pa'
+  }, 'google_translate_element');
 }

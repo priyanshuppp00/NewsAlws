@@ -36,23 +36,18 @@
 
 /* Breaking News */
 .breaking-news {
-  font-size: 20px;
-  font-weight: bold;
+  margin-top: 60px;
+  background: red;
   color: white;
-  background-color: red;
+  font-weight: bold;
   padding: 10px;
-  border-radius: 5px;
-  display: block;
-  margin-top: 35px;
+  overflow: hidden;
   text-align: center;
-  overflow: hidden;  /* Hide the overflow */
-  white-space: nowrap;  /* Prevent wrapping of the text */
 }
 
-/* Marquee Effect Using CSS */
 .breaking-text {
   display: inline-block;
-  animation: marquee 10s linear infinite;  /* Animation lasting 10 seconds */
+  animation: marquee 10s linear infinite;
 }
 
 @keyframes marquee {
